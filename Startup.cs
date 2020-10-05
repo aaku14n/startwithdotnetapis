@@ -27,6 +27,12 @@ namespace ProductsApi
         {
             services.AddControllers();
             services.AddSingleton<IProductsService, ProductsService>();
+            //         services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
+            //    {
+            //        builder.WithOrigins("http://localhost").AllowAnyMethod().AllowAnyHeader();
+            //    }));
+
+            //         services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +48,12 @@ namespace ProductsApi
             app.UseRouting();
 
             app.UseAuthorization();
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseEndpoints(endpoints =>
             {
